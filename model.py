@@ -9,8 +9,10 @@ features = torch.from_numpy(data[:, :6])
 attributes = torch.from_numpy(data[:, 6:])
 
 # Define the linear neural network
+input_size = features.size()[1]
+output_size = attributes.size()[1]
 model = torch.nn.Sequential(
-    torch.nn.Linear(6, 1)
+    torch.nn.Linear(input_size, output_size)
 )
 
 # Define the loss function and optimizer
