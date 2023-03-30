@@ -2,7 +2,7 @@ import torch
 import numpy as np
 
 # Load the data from the file
-data = np.loadtxt('cancer_data.txt', delimiter=',', skiprows=1)
+data = np.loadtxt('cancer_data.txt', delimiter=' ', skiprows=1)
 
 # Split the data into features and attributes
 features = torch.from_numpy(data[:, :6])
