@@ -17,10 +17,10 @@ model = torch.nn.Sequential(
 
 # Define the loss function and optimizer
 criterion = torch.nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+optimizer = torch.optim.AdamW(model.parameters(), lr=0.1)
 
 # Train the model
-for epoch in range(16000):
+for epoch in range(5000):
     # Forward pass
     outputs = model(features.float())
     loss = criterion(outputs, attributes.float())
@@ -32,7 +32,7 @@ for epoch in range(16000):
     
     # Print progress
     # if (epoch+1) % 10 == 0:
-    print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch+1, 100, loss.item()))
+    print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch+1, 100, loss.item()/output_size))
 
 # Save the trained model
 torch.save(model.state_dict(), 'linear_nn.pth')
