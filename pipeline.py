@@ -115,6 +115,7 @@ for i in range(attributes.shape[1]):
     # print([abs(x) / sum(abs_weights) for x in model.coef_], sum(abs_weights[0]))
     # model_weights.append([abs(x) / sum(abs_weights[0]) for x in model.coef_])
 
+
     # Calculate the F1 score and output it
     f1 = f1_score(y_test, y_pred)
     f1_one = f1_score(y_test, all_ones)
