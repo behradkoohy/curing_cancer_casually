@@ -106,11 +106,7 @@ for i in range(attributes.shape[1]):
     all_ones = np.ones_like(y_pred)
     all_zeros = np.zeros_like(y_pred)
 
-    # model_weights.append([abs(x) for x in model.coef_])
-    # model_weights.append(softmax([abs(x) for x in model.coef_]))
-    abs_weights = [abs(x) for x in model.coef_]
-    # print([abs(x) / sum(abs_weights) for x in model.coef_], sum(abs_weights[0]))
-    model_weights.append([abs(x) / sum(abs_weights[0]) for x in model.coef_])
+    model_weights.append([abs(x) for x in model.coef_])
 
     # Calculate the F1 score and output it
     f1 = f1_score(y_test, y_pred)
