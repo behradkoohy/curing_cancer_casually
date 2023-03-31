@@ -8,6 +8,7 @@ from sklearn.metrics import f1_score
 import matplotlib.pyplot as plt
 from scipy.special import softmax
 
+
 # Load the labels
 with open("cancer.txt", "r") as f:
     labels = f.readline().split("\t")
@@ -23,7 +24,7 @@ to_plot = []
 model_weights = []
 
 
-def plot_results(results, title):
+def plot_results(results, title, labels_list):
     # Separate the results and benchmarks into two separate lists
     results_list = [result[0] for result in results]
     benchmarks_list = [result[1] for result in results]
@@ -50,7 +51,9 @@ def plot_results(results, title):
         label="Benchmarks",
     )
     ax.set_xticks([i + bar_width / 2 for i in range(len(results))])
-    ax.set_xticklabels(x_labels)
+    # ax.set_xticklabels(x_labels)
+    ax.set_xticklabels(labels_list[6:])
+    plt.xticks(rotation=90, ha='right')
     ax.set_title(title)
     ax.legend()
 
@@ -106,16 +109,17 @@ for i in range(attributes.shape[1]):
     all_ones = np.ones_like(y_pred)
     all_zeros = np.zeros_like(y_pred)
 
-    # model_weights.append([abs(x) for x in model.coef_])
+    model_weights.append([abs(x) for x in model.coef_])
     # model_weights.append(softmax([abs(x) for x in model.coef_]))
-    abs_weights = [abs(x) for x in model.coef_]
+    # abs_weights = [abs(x) for x in model.coef_]
     # print([abs(x) / sum(abs_weights) for x in model.coef_], sum(abs_weights[0]))
-    model_weights.append([abs(x) / sum(abs_weights[0]) for x in model.coef_])
+    # model_weights.append([abs(x) / sum(abs_weights[0]) for x in model.coef_])
 
     # Calculate the F1 score and output it
     f1 = f1_score(y_test, y_pred)
     f1_one = f1_score(y_test, all_ones)
     f1_zero = f1_score(y_test, all_zeros)
+    breakpoint()
     best_baseline = max(f1_zero, f1_one)
     to_plot.append((f1, best_baseline))
 
@@ -126,5 +130,5 @@ for i in range(attributes.shape[1]):
     )
 
 
-# plot_results(to_plot, type(model).__name__)
-plot_weights_heatmap(model_weights, labels)
+plot_results(to_plot, type(model).__name__, labels)
+# plot_weights_heatmap(model_weights, labels)
