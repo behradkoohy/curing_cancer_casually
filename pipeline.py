@@ -7,7 +7,11 @@ from sklearn.metrics import f1_score
 import matplotlib.pyplot as plt
 
 
-# Load the data file
+# Load the labels
+with open("cancer.txt", "r") as f:
+    labels = f.readline().split("\t")
+
+labels = [label.lstrip("deg:").lstrip("sga:") for label in labels]
 data = np.loadtxt("cancer.txt", skiprows=1)
 
 # Split the data into features and attributes
@@ -39,13 +43,16 @@ def plot_results(results, title):
     plt.show()
 
 
-def plot_weights_heatmap(weights_list):
+def plot_weights_heatmap(weights_list, labels_list):
     # Concatenate the model weights for all SVMs
     all_weights = np.concatenate(weights_list, axis=0)
 
     # Create a heat map of the model weights
     fig, ax = plt.subplots()
     heatmap = ax.pcolor(all_weights, cmap='Reds')
+    ax.set_yticklabels(labels_list[6:])
+    ax.set_xticklabels(labels_list[:6])
+
     ax.set_xticks(np.arange(all_weights.shape[1]) + 0.5, minor=False)
     ax.set_yticks(np.arange(all_weights.shape[0]) + 0.5, minor=False)
     ax.invert_yaxis()
@@ -53,12 +60,12 @@ def plot_weights_heatmap(weights_list):
 
     # Add color bar
     cbar = plt.colorbar(heatmap)
-    cbar.ax.tick_params(labelsize=10)
+    cbar.ax.tick_params(labelsize=15)
 
     plt.show()
 
 
-# Loop through each attribute and train an SVM to predict it
+# Loop through each attribute and train a model to predict it
 for i in range(attributes.shape[1]):
     target = attributes[:, i]
     
@@ -69,7 +76,7 @@ for i in range(attributes.shape[1]):
     zeros = len(y_train) - ones
 
 
-    # Train an SVM model on the training data
+    # Train a model model on the training data
     # svm = SVC()
     model = LogisticRegression(class_weight="balanced", penalty='l1', solver='liblinear')
 
@@ -97,4 +104,4 @@ for i in range(attributes.shape[1]):
 
 
 # plot_results(to_plot, type(model).__name__)
-plot_weights_heatmap(model_weights)
+plot_weights_heatmap(model_weights, labels)
